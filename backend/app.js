@@ -8,27 +8,6 @@ app.use(express.json());
 //vamos substituir a configuração CORS manual, usando pacote cors
 app.use(cors())
 
-// Aqui estamos aplicando um middleware
-// CORS: Cross Origin Resource Sharing
-//Servidor
-// https://localhost:3000
-//Cliente
-// https://localhost:4200
-// hosts são diferentes quando um desses itens (protocolo, host ou porta) são diferentes
-//CORS entra em cena e bloqueia requisições por padrão
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type,Accept"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PATCH, DELETE,OPTIONS"
-//   );
-//   next();
-// });
-
 const {
   MONGODB_USER,
   MONGODB_PASSWORD,
@@ -76,6 +55,7 @@ app.post ('/api/clientes', (req, res) => {
     fone: req.body.fone,
     email: req.body.email
   })
+  cliente.save()
   console.log(cliente)
   res.status(201).json({mensagem: "Cliente inserido"})
 });
