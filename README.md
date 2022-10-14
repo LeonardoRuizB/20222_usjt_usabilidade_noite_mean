@@ -1,3 +1,19 @@
+# Instruções para uso do pacote dotenv
+
+Criar um arquivo chamado .env na raiz do projeto
+
+MONGODB_USER=
+
+MONGODB_PASSWORD=
+
+MONGODB_CLUSTER=
+
+MONGODB_HOST=
+
+Exemplo de String de conexão
+
+mongodb+srv://`MONGODB_USER`:`MONGODB_PASSWORD`@`MONGODB_CLUSTER`.`MONGODB_HOST`.mongodb.net/?retryWrites=true&w=majority
+
 # Projetomean
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
