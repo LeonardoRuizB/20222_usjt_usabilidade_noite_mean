@@ -33,8 +33,13 @@ export class ClienteService {
 
   adicionarCliente(nome: string, fone: string, email: string): void {
     const cliente: Cliente = { nome, fone, email }
-    this.clientes.push(cliente)
-    this.listaClientesAtualizada.next([...this.clientes]);
+    const url = 'http://localhost:3000/api/clientes'
+    this.httpClient.post<{mensagem: string}>(url, cliente)
+    .subscribe((dados) => {
+      console.log(dados.mensagem)
+      this.clientes.push(cliente)
+      this.listaClientesAtualizada.next([...this.clientes]);
+    })
   }
   getListaDeClientesAtualizadaObservable() {
     return this.listaClientesAtualizada.asObservable();
