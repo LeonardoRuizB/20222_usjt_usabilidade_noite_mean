@@ -61,9 +61,21 @@ app.post ('/api/clientes', (req, res) => {
 });
 
 app.get("/api/clientes", (req, res) => {
+  Cliente.find().then((documents) => {
+  console.log (documents);
   res.status(200).json({
     mensagem: "Tudo OK",
     clientes: clientes,
   });
+  });
 });
+
+app.delete ('/api/clientes/:id', (req, res, next) => {
+  Cliente.deleteOne ({_id: req.params.id}).then((resultado) => {
+    console.log (resultado);
+    res.status(200).json({mensagem: "Cliente removido"})
+    });
+
+ });
+
 module.exports = app;
