@@ -55,9 +55,14 @@ app.post ('/api/clientes', (req, res) => {
     fone: req.body.fone,
     email: req.body.email
   })
-  cliente.save()
-  console.log(cliente)
-  res.status(201).json({mensagem: "Cliente inserido"})
+  cliente.save().then (clienteInserido => {
+    console.log(cliente)
+    res.status(201).json({
+      mensagem: "Cliente inserido",
+      id: clienteInserido._id
+
+    })
+  })
 });
 
 app.get("/api/clientes", (req, res) => {

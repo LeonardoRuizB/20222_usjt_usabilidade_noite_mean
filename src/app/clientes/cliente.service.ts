@@ -22,42 +22,50 @@ export class ClienteService {
   constructor(private httpClient: HttpClient) { }
 
   getClientes(): void {
-    this.httpClient.get <{mensagem: string, clientes: any}>('http://localhost:3000/api/clientes')
-    .pipe(map((dados) => {
-    return dados.clientes.map(cliente => {
-    return {
-    id: cliente._id,
-    nome: cliente.nome,
-    fone: cliente.fone,
-    email: cliente.email
-    }
-    })
-    }))
-    .subscribe(
-    (clientes) => {
-    this.clientes = clientes;
-    this.listaClientesAtualizada.next([...this.clientes]);
-    }
-    )
-    }
+    this.httpClient.get<{ mensagem: string, clientes: any }>('http://localhost:3000/api/clientes')
+      .pipe(map((dados) => {
+        return dados.clientes.map(cliente => {
+          return {
+            id: cliente._id,
+            nome: cliente.nome,
+            fone: cliente.fone,
+            email: cliente.email
+          }
+        })
+      }))
+      .subscribe(
+        (clientes) => {
+          this.clientes = clientes;
+          this.listaClientesAtualizada.next([...this.clientes]);
+        }
+      )
+  }
+
+  getCliente(idCliente: string){
+    return { ...this.clientes.find(cli => cli.id === idCliente) }
+  }
 
   adicionarCliente(nome: string, fone: string, email: string): void {
-    const cliente: Cliente = { nome, fone, email, id:"" }
+    const cliente: Cliente ={
+      id: " ", nome, fone, email
+    }
     const url = 'http://localhost:3000/api/clientes'
-    this.httpClient.post<{mensagem: string}>(url, cliente)
-    .subscribe((dados) => {
-      console.log(dados.mensagem)
-      this.clientes.push(cliente)
-      this.listaClientesAtualizada.next([...this.clientes]);
-    })
+    this.httpClient.post<{ mensagem: string, id: string }>(url, cliente)
+      .subscribe((dados) => {
+        cliente.id = dados.id
+        this.clientes.push(cliente)
+        this.listaClientesAtualizada.next([...this.clientes]);
+      })
   }
   getListaDeClientesAtualizadaObservable() {
     return this.listaClientesAtualizada.asObservable();
   }
 
-  removerCliente (id: string): void{
+  removerCliente(id: string): void {
     this.httpClient.delete(`http://localhost:3000/api/clientes/${id}`).subscribe(() => {
-    console.log (`Cliente de id: ${id} removido`);
+      console.log(`Cliente de id: ${id} removido`);
+      this.clientes = this.clientes.filter((cli) => cli.id !== id )
+      this.listaClientesAtualizada.next([...this.clientes])
     });
-    }
+  }
 }
